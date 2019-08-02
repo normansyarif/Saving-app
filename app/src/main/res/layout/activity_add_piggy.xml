@@ -52,22 +52,23 @@
         <TextView
             android:id="@+id/update_type"
             android:layout_marginTop="40dp"
-            android:text="Add to piggy bank"
+            android:text="How much do you want to add?"
             android:layout_marginLeft="5dp"
-            android:textColor="#02c6b1"
+            android:textColor="@color/colorPrimary"
             android:layout_below="@+id/saving_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <EditText
+
             android:id="@+id/editText"
+            android:gravity="end"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/update_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:hint="How much?"
-            android:textColor="#02c6b1"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
             android:padding="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
@@ -76,11 +77,12 @@
 
 
         <Button
+            android:onClick="saveData"
             android:layout_marginTop="20dp"
             android:layout_below="@id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#02c6b1"
+            android:backgroundTint="@color/colorPrimary"
             android:textColor="#fff"
             android:text="save"/>
 

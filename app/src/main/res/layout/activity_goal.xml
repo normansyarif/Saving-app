@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/goal_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -25,6 +26,8 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/goal_target"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -33,10 +36,20 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:text="Clear"
+        android:onClick="clearFields"
+        android:textColor="#fff"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
         android:text="Save"
+        android:onClick="saveData"
         android:textColor="#fff"
         android:backgroundTint="@color/colorPrimary"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

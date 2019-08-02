@@ -1,25 +1,40 @@
 package io.github.normansyarif.mysaving;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
+    TextView curSaving, curPiggy, curBank, goalDesc, goalLeft, noGoal;
+    ProgressBar goalProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        curSaving = findViewById(R.id.cur_saving);
+        curPiggy = findViewById(R.id.cur_piggy);
+        curBank = findViewById(R.id.cur_bank);
+        goalDesc = findViewById(R.id.goal_desc);
+        goalLeft = findViewById(R.id.goal_left);
+        noGoal = findViewById(R.id.no_goal);
+        goalProgress = findViewById(R.id.goal_progress);
+
         myDb = new DatabaseHelper(this);
 
-//        insert();
-        showAll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setData();
     }
 
     private void openActivity(Class<?> cls) {
@@ -53,39 +68,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showAll() {
-        Cursor res = myDb.getFromDb("col_goal_desc, col_goal_target");
+    private void setData() {
+
+        Cursor res = myDb.getFromDb("col_piggy, col_bank, col_goal_desc, col_goal_target");
         if(res.getCount() == 0) {
-            // show message
-            showMessage("Error","Nothing found");
-            return;
+            myDb.insertData(0, 0, "", 0);
         }
 
-        StringBuilder buffer = new StringBuilder();
         while (res.moveToNext()) {
-            buffer.append("Id :").append(res.getString(0)).append("\n");
-            buffer.append("piggy :").append(res.getString(1)).append("\n");
+            int _curSaving = (res.getInt(0) + res.getInt(1));
+            Log.d("miku", "HERE => " + _curSaving);
+
+            curSaving.setText(Utils.numberToMoney(_curSaving));
+            curPiggy.setText(Utils.numberToMoney(res.getInt(0)));
+            curBank.setText(Utils.numberToMoney(res.getInt(1)));
+
+            if(!res.getString(2).equals("")) {
+                goalDesc.setText(res.getString(2));
+                if(_curSaving >= res.getInt(3)) {
+                    goalLeft.setText("Hooray! you've reached your goal!");
+                    goalProgress.setProgress(100);
+                }else{
+                    int progress = _curSaving * 100 / res.getInt(3);
+                    goalLeft.setText(Utils.numberToMoney((res.getInt(3) - _curSaving)) + " left to reach " + Utils.numberToMoney(res.getInt(3)) + " (" + progress + "%)");
+                    goalProgress.setProgress(progress);
+                }
+
+                noGoal.setVisibility(View.GONE);
+                goalDesc.setVisibility(View.VISIBLE);
+                goalLeft.setVisibility(View.VISIBLE);
+                goalProgress.setVisibility(View.VISIBLE);
+            }else{
+                noGoal.setVisibility(View.VISIBLE);
+                goalDesc.setVisibility(View.GONE);
+                goalLeft.setVisibility(View.GONE);
+                goalProgress.setVisibility(View.GONE);
+            }
         }
 
-        // Show all data
-        showMessage("Data",buffer.toString());
     }
 
-
-
-    public void showMessage(String title,String Message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(Message);
-        builder.show();
-    }
-
-    private void insert() {
-        boolean isInserted = myDb.insertData(1, 1000, 2000, "Descript", 3000);
-        if(isInserted == true)
-            Toast.makeText(MainActivity.this,"Data Inserted",Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(MainActivity.this,"Data not Inserted",Toast.LENGTH_LONG).show();
-    }
 }

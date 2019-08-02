@@ -30,10 +30,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    boolean insertData(int id, int piggy, int bank, String goalDesc, int goalTarget) {
+    boolean insertData(int piggy, int bank, String goalDesc, int goalTarget) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_ID, id);
+        contentValues.put(COL_ID, 1);
         contentValues.put(COL_PIGGY, piggy);
         contentValues.put(COL_BANK, bank);
         contentValues.put(COL_GOAL_DESC, goalDesc);
@@ -47,18 +47,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("select " + columns + " from "+TABLE_NAME + " where col_id = 1",null);
     }
-//
-//    public boolean updateData(String id,String name,String surname,String marks) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(COL_1,id);
-//        contentValues.put(COL_2,name);
-//        contentValues.put(COL_3,surname);
-//        contentValues.put(COL_4,marks);
-//        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] { id });
-//        return true;
-//    }
-//
+
+    boolean updateGoalData(String _goalDesc, int _goalTarget) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("col_goal_desc", _goalDesc);
+        contentValues.put("col_goal_target", _goalTarget);
+        db.update(TABLE_NAME, contentValues, "col_id = ?",new String[] { "1" });
+        return true;
+    }
+
+    boolean updateData(String colName, int _newValue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(colName, _newValue);
+        db.update(TABLE_NAME, contentValues, "col_id = ?",new String[] { "1" });
+        return true;
+    }
+
+
 //    public Integer deleteData (String id) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
