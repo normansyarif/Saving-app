@@ -52,7 +52,7 @@
         <TextView
             android:id="@+id/update_type"
             android:layout_marginTop="40dp"
-            android:text="How much do you want to take?"
+            android:text="How much do you want to take? (* Rp. 1,000)"
             android:layout_marginLeft="5dp"
             android:textColor="#D81B60"
             android:layout_below="@+id/saving_info"

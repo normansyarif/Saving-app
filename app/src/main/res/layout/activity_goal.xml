@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:inputType="number"
-            android:hint="Target" />
+            android:hint="Target (in thousand)" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
